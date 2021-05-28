@@ -1,6 +1,9 @@
 package studySystem;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +13,7 @@ public class Course {
 	private LocalDate endDate;
 	private int noFlashcards;
 	private List<WeeklyTimeSlot> weeklies;
+	private List<CourseEvent> events;
 	private List<StudySession> studySessions;
 	
 	public Course(String name, LocalDate startDate, LocalDate endDate) {
@@ -18,6 +22,21 @@ public class Course {
 		this.endDate = endDate;
 		this.noFlashcards = 0;
 		studySessions = new ArrayList<>();
+		events = new ArrayList<>();
+		studySessions = new ArrayList<>();
+	}
+	
+	public void newWeekly(CourseEventType type, DayOfWeek day, LocalTime timeStart, 
+			LocalTime timeEnd, LocalDate slotStart, LocalDate slotEnd, int creditPerWeek) {
+		WeeklyTimeSlot slot = new WeeklyTimeSlot(type, day, timeStart, timeEnd, slotStart, slotEnd);
+		weeklies.add(slot);
+		
+		Period length = Period.between(slotStart, slotEnd);
+		int weeks = length.getDays() / 7 + 1;
+		
+		for(int i = 0; i < weeks; i++) {
+			events.add(new CourseEvent(type, slotStart.plusWeeks(weeks).atTime(timeStart), slotStart.plusWeeks(weeks).atTime(timeEnd), creditPerWeek));
+		}
 	}
 	
 	public String getName() {
