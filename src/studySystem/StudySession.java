@@ -16,6 +16,14 @@ public class StudySession {
 		this.startTime = LocalDateTime.now();
 		this.method = method;
 		this.details = details;
+		this.endTime = null;
+	}
+	
+	public StudySession(LocalDateTime startTime, LocalDateTime endTime, StudyMethod method, StudyDetails details) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.method = method;
+		this.details = details;
 	}
 
 	public LocalDateTime getStartTime() {
