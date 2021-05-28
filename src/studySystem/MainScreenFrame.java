@@ -1,9 +1,10 @@
-package StudySystem;
+package studySystem;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.time.LocalDate;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -56,9 +57,9 @@ public class MainScreenFrame extends JFrame {
         
         JScrollPane courseScrollPane = new JScrollPane(courseList, 20, 30);
         courseScrollPane.setBorder(null);
-        courseModel.addElement(new Course("Functional Programming"));
-        courseModel.addElement(new Course("Computer Architecture"));
-        courseModel.addElement(new Course("Advanced Systems Programming"));
+        courseModel.addElement(new Course("Functional Programming", LocalDate.now(), LocalDate.of(3000, 10, 29)));
+        courseModel.addElement(new Course("Computer Architecture", LocalDate.now(), LocalDate.of(3000, 10, 29)));
+        courseModel.addElement(new Course("Advanced Systems Programming", LocalDate.now(), LocalDate.of(3000, 10, 29)));
 		
 //		JButton button = new JButton();
 //		button.setBounds(10, 10, 100, 50);

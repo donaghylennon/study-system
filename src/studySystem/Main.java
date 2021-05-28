@@ -1,4 +1,4 @@
-package StudySystem;
+package studySystem;
 
 public class Main {
 
@@ -21,13 +21,13 @@ public class Main {
 //		}
 //		JFrame.setDefaultLookAndFeelDecorated(true);
 		
-		Course[] courses = new Course[3];
-		for(int i = 0; i < courses.length; i++) {
-			courses[i] = new Course("Course " + i);
-		}
+//		Course[] courses = new Course[3];
+//		for(int i = 0; i < courses.length; i++) {
+//			courses[i] = new Course("Course " + i);
+//		}
+		Course[] courses = null;
 		
-		StudySystemFrame frame = new StudySystemFrame(courses);
-		
+		MainScreenFrame frame = new MainScreenFrame(courses);
 	}
 
 }

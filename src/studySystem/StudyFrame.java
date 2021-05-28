@@ -1,4 +1,4 @@
-package StudySystem;
+package studySystem;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -34,9 +34,10 @@ public class StudyFrame extends JFrame {
 		JLabel studyMethodLabel = new JLabel("Study method: ");
 		JComboBox<String> studyMethodCBox = new JComboBox<String>(new DefaultComboBoxModel<String>());
 		JScrollPane studyDetailsScrollPane = new JScrollPane(studyDetailsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
 		JButton pomodoroButton = new JButton("Start Pomodoro");
 //		pomodoroButton.setSize(new Dimension(50, 25));
+		
+		pomodoroButton.setFocusable(false);
 		
 		studyMethodCBox.addItem("Pomodoro");
 		studyMethodCBox.addItem("Flashcards");
