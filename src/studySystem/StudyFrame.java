@@ -16,6 +16,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 
 public class StudyFrame extends JFrame {
@@ -30,6 +33,10 @@ public class StudyFrame extends JFrame {
 		JPanel rightPanel = new JPanel();
 		JPanel studyMethodPanel = new JPanel();
 		JPanel studyDetailsPanel = new JPanel();
+		JPanel pomodoroDetailsPanel = new JPanel();
+		JPanel mkFlashcardsDetailsPanel = new JPanel();
+		JPanel rvFlashcardsDetailsPanel = new JPanel();
+		JPanel pastPaperDetailsPanel = new JPanel();
 		JLabel questionLabel = new JLabel("Did you study today?");
 		JLabel studyMethodLabel = new JLabel("Study method: ");
 		JComboBox<String> studyMethodCBox = new JComboBox<String>(new DefaultComboBoxModel<String>());
@@ -40,7 +47,37 @@ public class StudyFrame extends JFrame {
 		pomodoroButton.setFocusable(false);
 		
 		studyMethodCBox.addItem("Pomodoro");
-		studyMethodCBox.addItem("Flashcards");
+		studyMethodCBox.addItem("Make Flashcards");
+		studyMethodCBox.addItem("Review Flashcards");
+		studyMethodCBox.addItem("Past Paper");
+		studyDetailsPanel.add(pomodoroDetailsPanel);
+		pomodoroDetailsPanel.add(new JLabel("Number of Sessions:"));
+		pomodoroDetailsPanel.add(new JSpinner(new SpinnerNumberModel(1, 1, 20, 1)));
+		pomodoroDetailsPanel.add(new JLabel("Session Length:"));
+		pomodoroDetailsPanel.add(new JSpinner(new SpinnerNumberModel(25, 10, 500, 5)));
+		pomodoroDetailsPanel.add(new JLabel("Sessions Failed:"));
+		pomodoroDetailsPanel.add(new JSpinner(new SpinnerNumberModel(0, 0, 20, 1)));
+		
+		studyMethodCBox.addActionListener(e -> {
+			switch(studyMethodCBox.getSelectedIndex()) {
+			case 0:
+				studyDetailsPanel.remove(0);
+				studyDetailsPanel.add(pomodoroDetailsPanel);
+				break;
+			case 1:
+				studyDetailsPanel.remove(0);
+				studyDetailsPanel.add(mkFlashcardsDetailsPanel);
+				break;	
+			case 2:
+				studyDetailsPanel.remove(0);
+				studyDetailsPanel.add(rvFlashcardsDetailsPanel);
+				break;
+			case 3:
+				studyDetailsPanel.remove(0);
+				studyDetailsPanel.add(pastPaperDetailsPanel);
+				break;
+			}
+		});
 		
 		pomodoroButton.setAlignmentX(CENTER_ALIGNMENT);
 		questionLabel.setAlignmentX(CENTER_ALIGNMENT);

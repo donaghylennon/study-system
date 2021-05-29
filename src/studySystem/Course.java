@@ -36,7 +36,8 @@ public class Course {
 		int weeks = length.getDays() / 7 + 1;
 		
 		for(int i = 0; i < weeks; i++) {
-			events.add(new CourseEvent(type, slotStart.plusWeeks(weeks).atTime(timeStart), slotStart.plusWeeks(weeks).atTime(timeEnd), creditPerWeek));
+			events.add(new CourseEvent(type, slotStart.plusWeeks(weeks).atTime(timeStart), 
+					slotStart.plusWeeks(weeks).atTime(timeEnd), creditPerWeek));
 		}
 	}
 	
