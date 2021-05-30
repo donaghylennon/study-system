@@ -27,7 +27,8 @@ public class Main {
 //		}
 		Course[] courses = null;
 		
-		MainScreenFrame frame = new MainScreenFrame(courses);
+//		MainScreenFrame frame = new MainScreenFrame(courses);
+		new MainPage();
 	}
 
 }
