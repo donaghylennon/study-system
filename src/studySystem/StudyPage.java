@@ -24,13 +24,9 @@ public class StudyPage extends JFrame implements ActionListener {
     private JPanel detailsPanel = new JPanel();
     private JPanel methodPanel = new JPanel();
     private JPanel detailsSectionPanel = new JPanel();
-    private DetailsSection pomodoroDetailsSection = new DetailsSection(StudyMethod.POMODORO);
-    private DetailsSection mkfcDetailsSection = new DetailsSection(StudyMethod.MAKE_FLASHCARDS);
-    private DetailsSection rvfcDetailsSection = new DetailsSection(StudyMethod.REVIEW_FLASHCARDS);
-    private DetailsSection ppDetailsSection = new DetailsSection(StudyMethod.PAST_PAPER);
-    
     
     private JButton pomodoroButton = new JButton("Start Pomodoro");
+    private JButton submitDetailsButton = new JButton("Submit");
     private JButton placeholderButton = new JButton("Placeholder");
     
     private JLabel didYouLabel = new JLabel("Did you study today?");
@@ -43,6 +39,20 @@ public class StudyPage extends JFrame implements ActionListener {
     private JPanel makeFlashcardsDetailsPanel = new JPanel();
     private JPanel reviewFlashcardsDetailsPanel = new JPanel();
     private JPanel pastPaperDetailsPanel = new JPanel();
+    
+    private JSpinner pomodoroSessionsSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 20, 1));
+    private JSpinner pomodoroLengthSpinner = new JSpinner(new SpinnerNumberModel(25, 10, 500, 5));
+    private JSpinner pomodoroFailedSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 20, 1));
+    
+    private JSpinner mkfcNumSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 100, 1));
+    
+    private JSpinner rvfcNumSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 500, 1));
+    private JSpinner rvfcSuccessSpinner = new JSpinner(new SpinnerNumberModel(10, 1, 500, 1));
+    private JSpinner rvfcFailedSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 500, 1));
+    
+    private JSpinner ppQuestionsSpinner = new JSpinner(new SpinnerNumberModel(3, 1, 100, 1));
+    private JSpinner ppGradeSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
+    private JSpinner ppPaperSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 5));
 	
 	public StudyPage() {
 		initWindow();
@@ -50,18 +60,20 @@ public class StudyPage extends JFrame implements ActionListener {
 		createStructure();
 		createSizing();
 		fillCombobox();
+		initDetailsPanels();
+		addListeners();
 		
 		this.setVisible(true);
 	}
 	
-	void initWindow() {
+	private void initWindow() {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(new Dimension(800, 600));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
 	}
 	
-	void createStructure() {
+	private void createStructure() {
 		this.add(mainPanel, BorderLayout.CENTER);
 		mainPanel.add(leftPanel, BorderLayout.WEST);
 		mainPanel.add(rightPanel, BorderLayout.CENTER);
@@ -73,19 +85,17 @@ public class StudyPage extends JFrame implements ActionListener {
 		methodPanel.add(methodLabel);
 		methodPanel.add(methodCombo);
 		detailsPanel.add(detailsSectionPanel);
-		detailsSectionPanel.add(pomodoroDetailsSection);
+		detailsPanel.add(submitDetailsButton);
+		detailsSectionPanel.add(pomodoroDetailsPanel);
 		rightPanel.add(placeholderButton, BorderLayout.CENTER);
-		
-//		pomodoroDetailsPanel.add();
 	}
 	
-	void createSizing() {
-		//pomodoroPanel.setPreferredSize(new Dimension(300, 100));
+	private void createSizing() {
 		pomodoroButton.setPreferredSize(new Dimension(300, 100));
 		placeholderButton.setPreferredSize(new Dimension(300, 100));
 	}
 	
-	void setLayouts() {
+	private void setLayouts() {
 		this.setLayout(new BorderLayout(0, 0));
 		mainPanel.setLayout(new BorderLayout(60, 0));
 		rightPanel.setLayout(new BorderLayout());
@@ -93,12 +103,58 @@ public class StudyPage extends JFrame implements ActionListener {
 		detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
 	}
 	
-	void fillCombobox() {
+	private void fillCombobox() {
 		methodCombo.addItem("Pomodoro");
 		methodCombo.addItem("Make Flashcards");
 		methodCombo.addItem("Review Flashcards");
 		methodCombo.addItem("Past Paper");
+	}
+	
+	private void addListeners() {
 		methodCombo.addActionListener(this);
+		submitDetailsButton.addActionListener(this);
+	}
+	
+	private void initDetailsPanels() {
+		pomodoroDetailsPanel.add(new JLabel("Number of Sessions:"));
+		pomodoroDetailsPanel.add(pomodoroSessionsSpinner);
+		pomodoroDetailsPanel.add(new JLabel("Session Length:"));
+		pomodoroDetailsPanel.add(pomodoroLengthSpinner);
+		pomodoroDetailsPanel.add(new JLabel("Sessions Failed:"));
+		pomodoroDetailsPanel.add(pomodoroFailedSpinner);
+		
+		makeFlashcardsDetailsPanel.add(new JLabel("Number of Flashcards:"));
+		makeFlashcardsDetailsPanel.add(mkfcNumSpinner);
+		
+		reviewFlashcardsDetailsPanel.add(new JLabel("Number of Flashcards:"));
+		reviewFlashcardsDetailsPanel.add(rvfcNumSpinner);
+		reviewFlashcardsDetailsPanel.add(new JLabel("Number Successful:"));
+		reviewFlashcardsDetailsPanel.add(rvfcSuccessSpinner);
+		reviewFlashcardsDetailsPanel.add(new JLabel("Number Failed:"));
+		reviewFlashcardsDetailsPanel.add(rvfcFailedSpinner);
+		
+		pastPaperDetailsPanel.add(new JLabel("Number of Questions:"));
+		pastPaperDetailsPanel.add(ppQuestionsSpinner);
+		pastPaperDetailsPanel.add(new JLabel("Percentage of Grade:"));
+		pastPaperDetailsPanel.add(ppGradeSpinner);
+		pastPaperDetailsPanel.add(new JLabel("Percentage of Paper Attempted:"));
+		pastPaperDetailsPanel.add(ppPaperSpinner);
+	}
+	
+	private void resetInputs() {
+		pomodoroSessionsSpinner.setValue(1);
+		pomodoroLengthSpinner.setValue(25);
+		pomodoroFailedSpinner.setValue(0);
+		
+		mkfcNumSpinner.setValue(10);
+		
+		rvfcNumSpinner.setValue(10);
+		rvfcSuccessSpinner.setValue(10);
+		rvfcFailedSpinner.setValue(0);
+		
+		ppQuestionsSpinner.setValue(3);
+		ppGradeSpinner.setValue(0);
+		ppPaperSpinner.setValue(0);
 	}
 	
 	@Override
@@ -109,63 +165,42 @@ public class StudyPage extends JFrame implements ActionListener {
 			switch (methodCombo.getSelectedIndex()) {
 			case 0:
 				detailsSectionPanel.removeAll();
-				detailsSectionPanel.add(pomodoroDetailsSection);
+				detailsSectionPanel.add(pomodoroDetailsPanel);
 				detailsSectionPanel.revalidate();
 				break;
 			case 1:
 				detailsSectionPanel.removeAll();
-				detailsSectionPanel.add(mkfcDetailsSection);
+				detailsSectionPanel.add(makeFlashcardsDetailsPanel);
 				detailsSectionPanel.revalidate();
 				break;
 			case 2:
 				detailsSectionPanel.removeAll();
-				detailsSectionPanel.add(rvfcDetailsSection);
+				detailsSectionPanel.add(reviewFlashcardsDetailsPanel);
 				detailsSectionPanel.revalidate();
 				break;
 			case 3:
 				detailsSectionPanel.removeAll();
-				detailsSectionPanel.add(ppDetailsSection);
+				detailsSectionPanel.add(pastPaperDetailsPanel);
 				detailsSectionPanel.revalidate();
 				break;
 			default:
 				break;
 			}
-		}
-	}
-
-	private class DetailsSection extends JPanel {
-		DetailsSection(StudyMethod method) {
-			this.setLayout(new GridLayout(3, 2, 5, 10));
-			switch(method) {
-			case POMODORO:
-				this.add(new JLabel("Number of Sessions:"));
-				this.add(new JSpinner(new SpinnerNumberModel(1, 1, 20, 1)));
-				this.add(new JLabel("Session Length:"));
-				this.add(new JSpinner(new SpinnerNumberModel(25, 10, 500, 5)));
-				this.add(new JLabel("Sessions Failed:"));
-				this.add(new JSpinner(new SpinnerNumberModel(0, 0, 20, 1)));
+		} else if(source == submitDetailsButton) {
+			switch (methodCombo.getSelectedIndex()) {
+			case 0:
+				int numSessions = (int) pomodoroSessionsSpinner.getValue();
 				break;
-			case MAKE_FLASHCARDS:
-				this.add(new JLabel("Number of Flashcards:"));
-				this.add(new JSpinner(new SpinnerNumberModel(10, 1, 100, 1)));
+			case 1:
 				break;
-			case REVIEW_FLASHCARDS:
-				this.add(new JLabel("Number of Flashcards:"));
-				this.add(new JSpinner(new SpinnerNumberModel(10, 1, 500, 1)));
-				this.add(new JLabel("Number Successful:"));
-				this.add(new JSpinner(new SpinnerNumberModel(10, 1, 500, 1)));
-				this.add(new JLabel("Number Failed:"));
-				this.add(new JSpinner(new SpinnerNumberModel(0, 0, 500, 1)));
+			case 2:
 				break;
-			case PAST_PAPER:
-				this.add(new JLabel("Number of Questions:"));
-				this.add(new JSpinner(new SpinnerNumberModel(3, 1, 100, 1)));
-				this.add(new JLabel("Percentage of Grade:"));
-				this.add(new JSpinner(new SpinnerNumberModel(0, 0, 100, 5)));
-				this.add(new JLabel("Percentage of Paper Attempted:"));
-				this.add(new JSpinner(new SpinnerNumberModel(0, 0, 100, 5)));
+			case 3:
+				break;
+			default:
 				break;
 			}
+			resetInputs();
 		}
 	}
 }

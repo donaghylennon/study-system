@@ -1,7 +1,6 @@
 package studySystem;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,12 +12,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 public class MainPage extends JFrame implements ActionListener {
     private JPanel mainPanel = new JPanel();
-//    private Box leftBox = Box.createVerticalBox();//new Box(BoxLayout.Y_AXIS);
-//    private Box rightBox = Box.createVerticalBox();//new Box(BoxLayout.Y_AXIS);
     private JPanel leftPanel = new JPanel();
     private JPanel rightPanel = new JPanel();
     private JPanel studyPanel = new JPanel();
@@ -41,25 +37,12 @@ public class MainPage extends JFrame implements ActionListener {
         setLayouts();
         createStructure();
         addCallbacks();
-
-//        leftBox.setPreferredSize(new Dimension(300, 500));
         createSizing();
-//        rightPanel.setBackground(new Color(0x4973AA));
-//        leftPanel.setBackground(new Color(0x4973AA));
-
-        // Setting visibility to help me see how the panels I'm using for structure are actually laid out
-//        leftBox.setBackground(new Color(0x09375E));
-//        leftBox.setOpaque(true);
-//        optionPanel.setBackground(new Color(0x35D0A0));
-
-//        studyButton.setAlignmentX(JFrame.CENTER_ALIGNMENT);
-//        optionPanel.setAlignmentX(JFrame.CENTER_ALIGNMENT);
 
         this.setVisible(true);
     }
 
     private void initWindow() {
-//        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(new Dimension(800, 600));
         this.setLocationRelativeTo(null);
@@ -69,8 +52,8 @@ public class MainPage extends JFrame implements ActionListener {
     private void createStructure() {
         // Arranging panels and boxes in order to display my components in the structure I want
         this.add(mainPanel, BorderLayout.CENTER);
-        mainPanel.add(leftPanel, BorderLayout.WEST);//, leftPanelGbc);
-        mainPanel.add(rightPanel, BorderLayout.CENTER);//, rightPanelGbc);
+        mainPanel.add(leftPanel, BorderLayout.WEST);
+        mainPanel.add(rightPanel, BorderLayout.CENTER);
         leftPanel.add(studyPanel, studyBtnGbc);
         leftPanel.add(optionPanel, optionsGbc);
         studyPanel.add(studyButton, BorderLayout.CENTER);
@@ -89,7 +72,6 @@ public class MainPage extends JFrame implements ActionListener {
     }
 
     private void setLayouts() {
-//        mainPanel.setLayout(new GridBagLayout());
     	this.setLayout(new BorderLayout(40, 40));
     	mainPanel.setLayout(new BorderLayout(40, 20));
         leftPanel.setLayout(new GridBagLayout());
