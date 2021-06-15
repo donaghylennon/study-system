@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -23,6 +24,7 @@ public class StudyPage extends JFrame implements ActionListener {
     private JPanel pomodoroPanel = new JPanel();
     private JPanel detailsPanel = new JPanel();
     private JPanel methodPanel = new JPanel();
+    private JPanel coursePanel = new JPanel();
     private JPanel detailsSectionPanel = new JPanel();
     
     private JButton pomodoroButton = new JButton("Start Pomodoro");
@@ -31,9 +33,12 @@ public class StudyPage extends JFrame implements ActionListener {
     
     private JLabel didYouLabel = new JLabel("Did you study today?");
     private JLabel methodLabel = new JLabel("Study method:");
+    private JLabel courseLabel = new JLabel("Course:");
     
     private DefaultComboBoxModel<String> methodModel = new DefaultComboBoxModel<>();
     private JComboBox<String> methodCombo = new JComboBox<>(methodModel);
+    private DefaultComboBoxModel<Course> courseModel = new DefaultComboBoxModel<>();
+    private JComboBox<Course> courseCombo = new JComboBox<>(courseModel);
 
     private JPanel pomodoroDetailsPanel = new JPanel();
     private JPanel makeFlashcardsDetailsPanel = new JPanel();
@@ -82,8 +87,11 @@ public class StudyPage extends JFrame implements ActionListener {
 		pomodoroPanel.add(pomodoroButton);
 		detailsPanel.add(didYouLabel);
 		detailsPanel.add(methodPanel);
+		detailsPanel.add(coursePanel);
 		methodPanel.add(methodLabel);
 		methodPanel.add(methodCombo);
+		coursePanel.add(courseLabel);
+		coursePanel.add(courseCombo);
 		detailsPanel.add(detailsSectionPanel);
 		detailsPanel.add(submitDetailsButton);
 		detailsSectionPanel.add(pomodoroDetailsPanel);
@@ -101,6 +109,11 @@ public class StudyPage extends JFrame implements ActionListener {
 		rightPanel.setLayout(new BorderLayout());
 		leftPanel.setLayout(new BorderLayout(0, 30));
 		detailsPanel.setLayout(new BoxLayout(detailsPanel, BoxLayout.Y_AXIS));
+		
+		pomodoroDetailsPanel.setLayout(new BoxLayout(pomodoroDetailsPanel, BoxLayout.Y_AXIS));
+		makeFlashcardsDetailsPanel.setLayout(new BoxLayout(makeFlashcardsDetailsPanel, BoxLayout.Y_AXIS));
+		reviewFlashcardsDetailsPanel.setLayout(new BoxLayout(reviewFlashcardsDetailsPanel, BoxLayout.Y_AXIS));
+		pastPaperDetailsPanel.setLayout(new BoxLayout(pastPaperDetailsPanel, BoxLayout.Y_AXIS));
 	}
 	
 	private void fillCombobox() {
@@ -108,6 +121,10 @@ public class StudyPage extends JFrame implements ActionListener {
 		methodCombo.addItem("Make Flashcards");
 		methodCombo.addItem("Review Flashcards");
 		methodCombo.addItem("Past Paper");
+		
+		courseCombo.addItem(new Course("Functional Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
+		courseCombo.addItem(new Course("Advanced Systems Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
+		courseCombo.addItem(new Course("Computer Architecture", LocalDate.now(), LocalDate.of(2050, 10, 29)));
 	}
 	
 	private void addListeners() {
@@ -189,7 +206,9 @@ public class StudyPage extends JFrame implements ActionListener {
 		} else if(source == submitDetailsButton) {
 			switch (methodCombo.getSelectedIndex()) {
 			case 0:
-				int numSessions = (int) pomodoroSessionsSpinner.getValue();
+				Course course = (Course) courseCombo.getSelectedItem();
+				course.newStudySession(StudyMethod.POMODORO, new PomodoroDetails((int) pomodoroSessionsSpinner.getValue(), 
+						(int) pomodoroLengthSpinner.getValue(), (int) pomodoroFailedSpinner.getValue()));
 				break;
 			case 1:
 				break;
