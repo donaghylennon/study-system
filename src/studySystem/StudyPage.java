@@ -6,6 +6,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -25,6 +27,7 @@ public class StudyPage extends JFrame implements ActionListener {
     private JPanel detailsPanel = new JPanel();
     private JPanel methodPanel = new JPanel();
     private JPanel coursePanel = new JPanel();
+    private JPanel timePanel = new JPanel();
     private JPanel detailsSectionPanel = new JPanel();
     
     private JButton pomodoroButton = new JButton("Start Pomodoro");
@@ -34,6 +37,7 @@ public class StudyPage extends JFrame implements ActionListener {
     private JLabel didYouLabel = new JLabel("Did you study today?");
     private JLabel methodLabel = new JLabel("Study method:");
     private JLabel courseLabel = new JLabel("Course:");
+    private JLabel timeLabel = new JLabel("Time:");
     
     private DefaultComboBoxModel<String> methodModel = new DefaultComboBoxModel<>();
     private JComboBox<String> methodCombo = new JComboBox<>(methodModel);
@@ -44,6 +48,9 @@ public class StudyPage extends JFrame implements ActionListener {
     private JPanel makeFlashcardsDetailsPanel = new JPanel();
     private JPanel reviewFlashcardsDetailsPanel = new JPanel();
     private JPanel pastPaperDetailsPanel = new JPanel();
+    
+    private JSpinner hourSpinner = new JSpinner(new SpinnerNumberModel(12, 0, 23, 1));
+    private JSpinner minuteSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 59, 1));
     
     private JSpinner pomodoroSessionsSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 20, 1));
     private JSpinner pomodoroLengthSpinner = new JSpinner(new SpinnerNumberModel(25, 10, 500, 5));
@@ -66,6 +73,7 @@ public class StudyPage extends JFrame implements ActionListener {
 		createSizing();
 		fillCombobox();
 		initDetailsPanels();
+		formatFields();
 		addListeners();
 		
 		this.setVisible(true);
@@ -88,10 +96,14 @@ public class StudyPage extends JFrame implements ActionListener {
 		detailsPanel.add(didYouLabel);
 		detailsPanel.add(methodPanel);
 		detailsPanel.add(coursePanel);
+		detailsPanel.add(timePanel);
 		methodPanel.add(methodLabel);
 		methodPanel.add(methodCombo);
 		coursePanel.add(courseLabel);
 		coursePanel.add(courseCombo);
+		timePanel.add(timeLabel);
+		timePanel.add(hourSpinner);
+		timePanel.add(minuteSpinner);
 		detailsPanel.add(detailsSectionPanel);
 		detailsPanel.add(submitDetailsButton);
 		detailsSectionPanel.add(pomodoroDetailsPanel);
@@ -125,6 +137,11 @@ public class StudyPage extends JFrame implements ActionListener {
 		courseCombo.addItem(new Course("Functional Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
 		courseCombo.addItem(new Course("Advanced Systems Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
 		courseCombo.addItem(new Course("Computer Architecture", LocalDate.now(), LocalDate.of(2050, 10, 29)));
+	}
+	
+	private void formatFields() {
+		hourSpinner.setEditor(new JSpinner.NumberEditor(hourSpinner, "00"));
+		minuteSpinner.setEditor(new JSpinner.NumberEditor(minuteSpinner, "00"));
 	}
 	
 	private void addListeners() {
@@ -207,8 +224,12 @@ public class StudyPage extends JFrame implements ActionListener {
 			switch (methodCombo.getSelectedIndex()) {
 			case 0:
 				Course course = (Course) courseCombo.getSelectedItem();
-				course.newStudySession(StudyMethod.POMODORO, new PomodoroDetails((int) pomodoroSessionsSpinner.getValue(), 
-						(int) pomodoroLengthSpinner.getValue(), (int) pomodoroFailedSpinner.getValue()));
+				int hour = (int)hourSpinner.getValue();
+				int minute = (int)minuteSpinner.getValue();
+				course.newStudySession(LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute)), 
+						LocalDateTime.of(LocalDate.now(), LocalTime.of(hour + 1, minute)), StudyMethod.POMODORO, 
+						new PomodoroDetails((int) pomodoroSessionsSpinner.getValue(), 
+								(int) pomodoroLengthSpinner.getValue(), (int) pomodoroFailedSpinner.getValue()));
 				break;
 			case 1:
 				break;
