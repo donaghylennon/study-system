@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 public class MainPage extends JFrame implements ActionListener {
 	private JPanel mainPanel = new JPanel();
+	
 	private JLabel titleLabel = new JLabel("Study System");
 	
 	private JButton studyButton = new JButton("Study");
@@ -39,7 +40,7 @@ public class MainPage extends JFrame implements ActionListener {
 		
 		if(source == studyButton) {
 			this.setVisible(false);
-			new StudyPage();
+			new StudyPage(this);
 		} else if(source == viewButton) {
 			
 		}
