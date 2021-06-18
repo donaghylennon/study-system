@@ -1,10 +1,13 @@
 package studySystem;
 
+import java.util.ArrayList;
+
 public class Main {
 
 	public static void main(String[] args) {
 //		new MainPageOLD();
-		new MainPage();
+		ArrayList<BasicStudySession> sessions = new ArrayList<>();
+		new MainPage(sessions);
 	}
 
 }
