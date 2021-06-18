@@ -46,7 +46,8 @@ public class MainPage extends JFrame implements ActionListener {
 			this.setVisible(false);
 			new StudyPage(this, sessions);
 		} else if(source == viewButton) {
-			
+			this.setVisible(false);
+			new ViewPage(this, sessions);
 		}
 	}
 }

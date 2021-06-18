@@ -16,7 +16,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 public class StudyPage extends JFrame implements ActionListener {
-	private JFrame ancestor;
+	private MainPage ancestor;
 	private Calendar calendar = Calendar.getInstance();
 	private List<BasicStudySession> sessions;
 	
