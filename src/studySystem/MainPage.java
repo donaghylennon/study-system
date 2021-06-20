@@ -10,7 +10,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class MainPage extends JFrame implements ActionListener {
-//	private List<BasicStudySession> sessions;
 	private StudySystem studySystem;
 	
 	private JPanel mainPanel = new JPanel();
@@ -21,7 +20,6 @@ public class MainPage extends JFrame implements ActionListener {
 	private JButton viewButton = new JButton("View Sessions");
 	
 	public MainPage(StudySystem studySystem) {
-//		this.sessions = sessions;
 		this.studySystem = studySystem;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(new Dimension(800, 600));

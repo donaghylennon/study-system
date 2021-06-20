@@ -14,7 +14,6 @@ import javax.swing.JTextArea;
 
 public class ViewPage extends JFrame implements ActionListener {
 	private MainPage ancestor;
-//	private List<BasicStudySession> sessions;
 	private StudySystem studySystem;
 	
 	private JPanel mainPanel = new JPanel();
@@ -28,7 +27,6 @@ public class ViewPage extends JFrame implements ActionListener {
 	
 	public ViewPage(MainPage ancestor, StudySystem studySystem) {
 		this.ancestor = ancestor;
-//		this.sessions = sessions;
 		this.studySystem = studySystem;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(new Dimension(800, 600));
@@ -51,17 +49,6 @@ public class ViewPage extends JFrame implements ActionListener {
         this.setVisible(true);
 	}
 	
-//	private String getSessionsText() {
-//		if(this.sessions == null || this.sessions.isEmpty())
-//			return "";
-//		StringBuilder textBuilder = new StringBuilder();
-//		for(BasicStudySession session : sessions) {
-//			textBuilder.append(session);
-//			textBuilder.append("\n");
-//		}
-//		return textBuilder.toString();
-//	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();

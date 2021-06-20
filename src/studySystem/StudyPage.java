@@ -14,7 +14,6 @@ import javax.swing.SpinnerNumberModel;
 
 public class StudyPage extends JFrame implements ActionListener {
 	private MainPage ancestor;
-//	private List<BasicStudySession> sessions;
 	private StudySystem studySystem;
 	
 	private JPanel mainPanel = new JPanel();
@@ -26,6 +25,7 @@ public class StudyPage extends JFrame implements ActionListener {
 	private JLabel titleLabel = new JLabel("Enter details of session:");
 	
 	private JButton submitButton = new JButton("Submit");
+	private JButton saveButton = new JButton("Save");
 	private JButton backButton = new JButton("Back");
 	
 	private JSpinner daySpinner = new JSpinner(new SpinnerNumberModel(LocalDate.now().getDayOfMonth(), 1, LocalDate.now().lengthOfMonth(), 1));
@@ -38,7 +38,6 @@ public class StudyPage extends JFrame implements ActionListener {
 	
 	public StudyPage(MainPage ancestor, StudySystem studySystem) {
 		this.ancestor = ancestor;
-//		this.sessions = sessions;
 		this.studySystem = studySystem;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(new Dimension(800, 600));
@@ -49,6 +48,7 @@ public class StudyPage extends JFrame implements ActionListener {
 		mainPanel.add(titleLabel);
 		mainPanel.add(inputPanel);
 		mainPanel.add(submitButton);
+		mainPanel.add(saveButton);
 		mainPanel.add(backButton);
 		inputPanel.add(datePanel);
 		inputPanel.add(timeStartPanel);
@@ -62,6 +62,7 @@ public class StudyPage extends JFrame implements ActionListener {
 		timeEndPanel.add(minuteEndSpinner);
 		
 		backButton.addActionListener(this);
+		saveButton.addActionListener(this);
 		submitButton.addActionListener(this);
 		
 		daySpinner.setEditor(new JSpinner.NumberEditor(daySpinner, "00"));
@@ -92,12 +93,9 @@ public class StudyPage extends JFrame implements ActionListener {
 		if(source == backButton) {
 			this.dispose();
 			ancestor.setVisible(true);
+		} else if(source == saveButton) {
+			studySystem.saveToFile();
 		} else if(source == submitButton) {
-//			sessions.add(new BasicStudySession(
-//					LocalDate.of((int)yearSpinner.getValue(), (int)monthSpinner.getValue(), (int)daySpinner.getValue()), 
-//					LocalTime.of((int)hourStartSpinner.getValue(), (int)minuteStartSpinner.getValue()), 
-//					LocalTime.of((int)hourEndSpinner.getValue(), (int)minuteEndSpinner.getValue()))
-//					);
 			studySystem.addSession((int)yearSpinner.getValue(), (int)monthSpinner.getValue(), (int)daySpinner.getValue(),
 					(int)hourStartSpinner.getValue(), (int)minuteStartSpinner.getValue(), 
 					(int)hourEndSpinner.getValue(), (int)minuteEndSpinner.getValue());
