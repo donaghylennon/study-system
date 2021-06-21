@@ -41,8 +41,8 @@ public class StudyPageOLD extends JFrame implements ActionListener {
     
     private DefaultComboBoxModel<String> methodModel = new DefaultComboBoxModel<>();
     private JComboBox<String> methodCombo = new JComboBox<>(methodModel);
-    private DefaultComboBoxModel<Course> courseModel = new DefaultComboBoxModel<>();
-    private JComboBox<Course> courseCombo = new JComboBox<>(courseModel);
+    private DefaultComboBoxModel<CourseOLD> courseModel = new DefaultComboBoxModel<>();
+    private JComboBox<CourseOLD> courseCombo = new JComboBox<>(courseModel);
 
     private JPanel pomodoroDetailsPanel = new JPanel();
     private JPanel makeFlashcardsDetailsPanel = new JPanel();
@@ -134,9 +134,9 @@ public class StudyPageOLD extends JFrame implements ActionListener {
 		methodCombo.addItem("Review Flashcards");
 		methodCombo.addItem("Past Paper");
 		
-		courseCombo.addItem(new Course("Functional Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
-		courseCombo.addItem(new Course("Advanced Systems Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
-		courseCombo.addItem(new Course("Computer Architecture", LocalDate.now(), LocalDate.of(2050, 10, 29)));
+		courseCombo.addItem(new CourseOLD("Functional Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
+		courseCombo.addItem(new CourseOLD("Advanced Systems Programming", LocalDate.now(), LocalDate.of(2050, 10, 29)));
+		courseCombo.addItem(new CourseOLD("Computer Architecture", LocalDate.now(), LocalDate.of(2050, 10, 29)));
 	}
 	
 	private void formatFields() {
@@ -223,10 +223,10 @@ public class StudyPageOLD extends JFrame implements ActionListener {
 		} else if(source == submitDetailsButton) {
 			switch (methodCombo.getSelectedIndex()) {
 			case 0:
-				Course course = (Course) courseCombo.getSelectedItem();
+				CourseOLD courseOLD = (CourseOLD) courseCombo.getSelectedItem();
 				int hour = (int)hourSpinner.getValue();
 				int minute = (int)minuteSpinner.getValue();
-				course.newStudySession(LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute)), 
+				courseOLD.newStudySession(LocalDateTime.of(LocalDate.now(), LocalTime.of(hour, minute)), 
 						LocalDateTime.of(LocalDate.now(), LocalTime.of(hour + 1, minute)), StudyMethod.POMODORO, 
 						new PomodoroDetails((int) pomodoroSessionsSpinner.getValue(), 
 								(int) pomodoroLengthSpinner.getValue(), (int) pomodoroFailedSpinner.getValue()));

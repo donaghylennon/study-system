@@ -5,7 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +30,8 @@ public class StudyPage extends JFrame implements ActionListener {
 	private JButton saveButton = new JButton("Save");
 	private JButton backButton = new JButton("Back");
 	
+	private JComboBox<Course> courseCBox = new JComboBox<>();
+	
 	private JSpinner daySpinner = new JSpinner(new SpinnerNumberModel(LocalDate.now().getDayOfMonth(), 1, LocalDate.now().lengthOfMonth(), 1));
 	private JSpinner monthSpinner = new JSpinner(new SpinnerNumberModel(LocalDate.now().getMonthValue(), 1, 12, 1));
 	private JSpinner yearSpinner = new JSpinner(new SpinnerNumberModel(LocalDate.now().getYear(), 2000, LocalDate.MAX.getYear(), 1));
@@ -43,6 +47,8 @@ public class StudyPage extends JFrame implements ActionListener {
         this.setSize(new Dimension(800, 600));
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+        
+		initCoursesBox();
 		
 		this.add(mainPanel);
 		mainPanel.add(titleLabel);
@@ -50,6 +56,7 @@ public class StudyPage extends JFrame implements ActionListener {
 		mainPanel.add(submitButton);
 		mainPanel.add(saveButton);
 		mainPanel.add(backButton);
+		inputPanel.add(courseCBox);
 		inputPanel.add(datePanel);
 		inputPanel.add(timeStartPanel);
 		inputPanel.add(timeEndPanel);
@@ -76,6 +83,10 @@ public class StudyPage extends JFrame implements ActionListener {
 		this.setVisible(true);
 	}
 	
+	private void initCoursesBox() {
+		courseCBox.setModel(new DefaultComboBoxModel<>(studySystem.getCourses().toArray(new Course[0])));
+	}
+	
 	private void resetInputs() {
 		daySpinner.setValue(LocalDate.now().getDayOfMonth());
 		monthSpinner.setValue(LocalDate.now().getMonthValue());
@@ -96,7 +107,7 @@ public class StudyPage extends JFrame implements ActionListener {
 		} else if(source == saveButton) {
 			studySystem.saveToFile();
 		} else if(source == submitButton) {
-			studySystem.addSession((int)yearSpinner.getValue(), (int)monthSpinner.getValue(), (int)daySpinner.getValue(),
+			studySystem.addSession((Course)courseCBox.getSelectedItem(), (int)yearSpinner.getValue(), (int)monthSpinner.getValue(), (int)daySpinner.getValue(),
 					(int)hourStartSpinner.getValue(), (int)minuteStartSpinner.getValue(), 
 					(int)hourEndSpinner.getValue(), (int)minuteEndSpinner.getValue());
 			resetInputs();
