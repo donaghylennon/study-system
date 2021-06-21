@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 public class ViewPage extends JFrame implements ActionListener {
@@ -20,8 +21,11 @@ public class ViewPage extends JFrame implements ActionListener {
 	
 	private JLabel titleLabel = new JLabel("View Previous Sessions");
 	
+	private JTabbedPane viewTP = new JTabbedPane();
 	private JTextArea sessionsTA = new JTextArea();
 	private JScrollPane sessionsPane = new JScrollPane(sessionsTA);
+	private JTextArea coursesTA = new JTextArea();
+	private JScrollPane coursesPane = new JScrollPane(coursesTA);
 	
 	private JButton backButton = new JButton("Back");
 	
@@ -37,14 +41,18 @@ public class ViewPage extends JFrame implements ActionListener {
         
         this.add(mainPanel);
         mainPanel.add(titleLabel, BorderLayout.NORTH);
-        mainPanel.add(sessionsPane, BorderLayout.CENTER);
+        mainPanel.add(viewTP, BorderLayout.CENTER);
         mainPanel.add(backButton, BorderLayout.SOUTH);
+        viewTP.addTab("Sessions", sessionsPane);
+        viewTP.addTab("Courses", coursesPane);
         
         backButton.addActionListener(this);
         
         sessionsTA.setText(studySystem.getSessionsText());
-        sessionsPane.setPreferredSize(new Dimension(200, 200));
+//        sessionsPane.setPreferredSize(new Dimension(200, 200));
         sessionsTA.setEditable(false);
+        coursesTA.setText(studySystem.getCoursesText());
+        coursesTA.setEditable(false);
         
         this.setVisible(true);
 	}
