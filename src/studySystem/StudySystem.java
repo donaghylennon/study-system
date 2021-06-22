@@ -29,6 +29,7 @@ public class StudySystem {
 		courses.add(new Course(name, 
 				LocalDate.of(startDateY, startDateM, startDateD), 
 				LocalDate.of(endDateY, endDateM, endDateD)));
+		saveToFile();
 	}
 	
 	public void addSession(Course course, int dateY, int dateM, int dateD, int startTimeH, int startTimeM, int endTimeH, int endTimeM) {
@@ -37,6 +38,7 @@ public class StudySystem {
 				LocalDate.of(dateY, dateM, dateD), 
 				LocalTime.of(startTimeH, startTimeM), 
 				LocalTime.of(endTimeH, endTimeM)));
+		saveToFile();
 	}
 	
 	public String getCoursesText() {
