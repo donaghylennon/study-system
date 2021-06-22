@@ -17,7 +17,8 @@ public class MainPage extends JFrame implements ActionListener {
 	private JLabel titleLabel = new JLabel("Study System");
 	
 	private JButton studyButton = new JButton("Study");
-	private JButton viewButton = new JButton("View Sessions");
+	private JButton courseButton = new JButton("Course");
+	private JButton viewButton = new JButton("View Details");
 	
 	public MainPage(StudySystem studySystem) {
 		this.studySystem = studySystem;
@@ -29,9 +30,11 @@ public class MainPage extends JFrame implements ActionListener {
         this.add(mainPanel);
         mainPanel.add(titleLabel);
         mainPanel.add(studyButton);
+        mainPanel.add(courseButton);
         mainPanel.add(viewButton);
         
         studyButton.addActionListener(this);
+        courseButton.addActionListener(this);
         viewButton.addActionListener(this);
         
         this.setVisible(true);
@@ -47,6 +50,9 @@ public class MainPage extends JFrame implements ActionListener {
 		} else if(source == viewButton) {
 			this.setVisible(false);
 			new ViewPage(this, studySystem);
+		} else if(source == courseButton) {
+			this.setVisible(false);
+			new CoursePage(this, studySystem);
 		}
 	}
 }
