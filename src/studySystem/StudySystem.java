@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -15,6 +19,7 @@ public class StudySystem {
 	List<BasicStudySession> sessions;
 	
 	public StudySystem() {
+		initDatabase();
 		courses = new ArrayList<>();
 		courses.add(Course.NONE);
 		sessions = new ArrayList<>();
@@ -125,6 +130,34 @@ public class StudySystem {
 		} finally {
 			if(sc != null)
 				sc.close();
+		}
+	}
+	
+	private void initDatabase() {
+		File file = new File("data/study.db");
+		if(!file.exists()) {
+			String query = "CREATE TABLE course"
+					+ "(	course_id 	INTEGER PRIMARY KEY NOT NULL,"
+					+ "		name 		TEXT NOT NULL,"
+					+ "		start_date	TEXT,"
+					+ "		end_date	TEXT"
+					+ "); "
+					+ "CREATE TABLE session"
+					+ "(	session_id	INTEGER PRIMARY KEY NOT NULL,"
+					+ "		course_id	INTEGER,"
+					+ "		date		TEXT NOT NULL,"
+					+ "		start_time	TEXT NOT NULL,"
+					+ "		end_time	TEXT NOT NULL,"
+					+ "		FOREIGN KEY(course_id) REFERENCES course(course_id) ON DELETE SET NULL ON UPDATE CASCADE"
+					+ ");";
+			
+			try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+					Statement st = c.createStatement()) {
+				st.executeUpdate(query);
+			} catch(SQLException e) {
+				System.err.println("Error connecting to database:");
+				e.printStackTrace();
+			}
 		}
 	}
 }

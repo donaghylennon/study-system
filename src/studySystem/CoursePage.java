@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.JSpinner.NumberEditor;
 
 public class CoursePage extends JFrame implements ActionListener {
 	private MainPage ancestor;
