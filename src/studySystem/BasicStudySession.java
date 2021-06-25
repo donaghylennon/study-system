@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class BasicStudySession {
+	private int id;
 	private Course course;
 	private LocalDate date;
 	private LocalTime timeStart;
@@ -15,6 +16,14 @@ public class BasicStudySession {
 	private static DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm");
 	
 	public BasicStudySession(Course course, LocalDate date, LocalTime timeStart, LocalTime timeEnd) {
+		this.course = course;
+		this.date = date;
+		this.timeStart = timeStart;
+		this.timeEnd = timeEnd;
+	}
+	
+	public BasicStudySession(int id, Course course, LocalDate date, LocalTime timeStart, LocalTime timeEnd) {
+		this.id = id;
 		this.course = course;
 		this.date = date;
 		this.timeStart = timeStart;

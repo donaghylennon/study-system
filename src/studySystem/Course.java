@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Course {
+	private int id;
 	private String name;
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -15,6 +16,17 @@ public class Course {
 		this.name = name;
 		this.startDate = startDate;
 		this.endDate = endDate;
+	}
+	
+	public Course(int id, String name, LocalDate startDate, LocalDate endDate) {
+		this.id = id;
+		this.name = name;
+		this.startDate = startDate;
+		this.endDate = endDate;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -40,10 +52,26 @@ public class Course {
 			return Course.NONE;
 		return result;
 	}
-
+	
+//	public static Course fromId(int id) {
+//		String query = "SELECT * FROM course WHERE course_id == " + id + ";";
+//		try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+//				Statement st = c.createStatement()) {
+//			ResultSet rs = st.executeQuery(query);
+//			rs.next();
+//			String name = rs.getString("name");
+//			LocalDate sd = LocalDate.ofEpochDay(rs.getInt("start_date"));
+//			LocalDate ed = LocalDate.ofEpochDay(rs.getInt("end_date"));
+//			return new Course(id, name, sd, ed);
+//		} catch(SQLException e) {
+//			System.err.println("Error connecting to database:");
+//			e.printStackTrace();
+//		}
+//		return null;
+//	}
+	
 	@Override
 	public String toString() {
-//		return name + ": From " + startDate.format(dateFmt) + " To " + endDate.format(dateFmt);
 		return name;
 	}
 
