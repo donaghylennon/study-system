@@ -1,9 +1,6 @@
 package studySystem;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,36 +10,36 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class StudySystem {
-	List<Course> courses;
-	List<BasicStudySession> sessions;
+//	private List<Course> courses;
+	private List<BasicStudySession> sessions;
+	private String databaseAddress = "jdbc:sqlite:data/study.db";
 	
 	public StudySystem() {
 		initDatabase();
-		courses = new ArrayList<>();
-		courses.add(Course.NONE);
+//		courses = new ArrayList<>();
+//		courses.add(Course.NONE);
 		sessions = new ArrayList<>();
-		loadCourses();
+//		loadCourses();
 		loadSessions();
 //		readFromFile();
 	}
 	
-	public List<Course> getCourses() {
-		return courses;
-	}
+//	public List<Course> getCourses() {
+//		return courses;
+//	}
 
 	public void addCourse(String name, int startDateY, int startDateM, int startDateD, int endDateY, int endDateM, int endDateD) {
 		LocalDate startDate = LocalDate.of(startDateY, startDateM, startDateD);
 		LocalDate endDate = LocalDate.of(endDateY, endDateM, endDateD);
 		Course newCourse = new Course(name, startDate, endDate);
 		
-		courses.add(newCourse);
+//		courses.add(newCourse);
 //		saveToFile();
 		String query = "INSERT INTO course(name,start_date,end_date) VALUES(\'" + name + "\',"
 		+ startDate.toEpochDay() + "," + endDate.toEpochDay() + ");";
-		try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+		try(Connection c = DriverManager.getConnection(databaseAddress);
 				Statement st = c.createStatement()) {
 			st.executeUpdate(query);
 		} catch(SQLException e) {
@@ -63,7 +60,7 @@ public class StudySystem {
 //		saveToFile();
 		String query = "INSERT INTO session(course_id,date,start_time,end_time) VALUES(" + course.getId() + ","
 				+ date.toEpochDay() + "," + startTime.toSecondOfDay() + "," + endTime.toSecondOfDay() + ");";
-		try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+		try(Connection c = DriverManager.getConnection(databaseAddress);
 				Statement st = c.createStatement()) {
 			st.executeUpdate(query);
 		} catch(SQLException e) {
@@ -73,10 +70,11 @@ public class StudySystem {
 	}
 	
 	public String getCoursesText() {
-		if(this.courses == null || this.courses.isEmpty())
+		List<Course> courselist = getCourses();
+		if(courselist == null || courselist.isEmpty())
 			return "";
 		StringBuilder textBuilder = new StringBuilder();
-		for(Course course : courses) {
+		for(Course course : courselist) {
 			if(course.equals(Course.NONE))
 				continue;
 			textBuilder.append(course);
@@ -96,15 +94,15 @@ public class StudySystem {
 		return textBuilder.toString();
 	}
 	
-	private String coursesToCsv() {
-		if(this.courses == null || this.courses.isEmpty())
-			return "";
-		StringBuilder result = new StringBuilder();
-		for(Course course : courses) {
-			result.append(course.toCsv());
-		}
-		return result.toString();
-	}
+//	private String coursesToCsv() {
+//		if(this.courses == null || this.courses.isEmpty())
+//			return "";
+//		StringBuilder result = new StringBuilder();
+//		for(Course course : courses) {
+//			result.append(course.toCsv());
+//		}
+//		return result.toString();
+//	}
 	
 	private String sessionsToCsv() {
 		if(this.sessions == null || this.sessions.isEmpty())
@@ -116,48 +114,48 @@ public class StudySystem {
 		return result.toString();
 	}
 	
-	public void saveToFile() {
-		FileWriter fw;
-		try {
-			fw = new FileWriter("data/data.csv");
-			fw.write("Courses:\n");
-			fw.write(coursesToCsv());
-			fw.write("Sessions:\n");
-			fw.write(sessionsToCsv());
-			fw.close();
-		} catch (IOException e) {
-			System.err.println("Couldn't write to file: ");
-			e.printStackTrace();
-		}
-	}
+//	public void saveToFile() {
+//		FileWriter fw;
+//		try {
+//			fw = new FileWriter("data/data.csv");
+//			fw.write("Courses:\n");
+//			fw.write(coursesToCsv());
+//			fw.write("Sessions:\n");
+//			fw.write(sessionsToCsv());
+//			fw.close();
+//		} catch (IOException e) {
+//			System.err.println("Couldn't write to file: ");
+//			e.printStackTrace();
+//		}
+//	}
 	
-	public void readFromFile() {
-		File file = new File("data/data.csv");
-		if(!file.exists())
-			return;
-		Scanner sc = null;
-		try {
-			sc = new Scanner(file);
-			if(sc.hasNextLine() && sc.nextLine().equals("Courses:")) {
-				while(sc.hasNextLine()) {
-					String line = sc.nextLine();
-					if(line.equals("Sessions:"))
-						break;
-					courses.add(Course.fromCsv(line));
-				}
-				while(sc.hasNextLine()) {
-					String line = sc.nextLine();
-					sessions.add(BasicStudySession.fromCsv(line, courses));
-				}
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("Couldn't read from file: ");
-			e.printStackTrace();
-		} finally {
-			if(sc != null)
-				sc.close();
-		}
-	}
+//	public void readFromFile() {
+//		File file = new File("data/data.csv");
+//		if(!file.exists())
+//			return;
+//		Scanner sc = null;
+//		try {
+//			sc = new Scanner(file);
+//			if(sc.hasNextLine() && sc.nextLine().equals("Courses:")) {
+//				while(sc.hasNextLine()) {
+//					String line = sc.nextLine();
+//					if(line.equals("Sessions:"))
+//						break;
+//					courses.add(Course.fromCsv(line));
+//				}
+//				while(sc.hasNextLine()) {
+//					String line = sc.nextLine();
+//					sessions.add(BasicStudySession.fromCsv(line, courses));
+//				}
+//			}
+//		} catch (FileNotFoundException e) {
+//			System.err.println("Couldn't read from file: ");
+//			e.printStackTrace();
+//		} finally {
+//			if(sc != null)
+//				sc.close();
+//		}
+//	}
 	
 	private void initDatabase() {
 		File file = new File("data/study.db");
@@ -177,7 +175,7 @@ public class StudySystem {
 					+ "		FOREIGN KEY(course_id) REFERENCES course(course_id) ON DELETE SET NULL ON UPDATE CASCADE"
 					+ ");";
 			
-			try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+			try(Connection c = DriverManager.getConnection(databaseAddress);
 					Statement st = c.createStatement()) {
 				st.executeUpdate(query);
 			} catch(SQLException e) {
@@ -187,9 +185,28 @@ public class StudySystem {
 		}
 	}
 	
-	private void loadCourses() {
+//	private void loadCourses() {
+//		String query = "SELECT * FROM course;";
+//		try(Connection c = DriverManager.getConnection(databaseAddress);
+//				Statement st = c.createStatement()) {
+//			ResultSet rs = st.executeQuery(query);
+//			while(rs.next()) {
+//				int id = rs.getInt("course_id");
+//				String name = rs.getString("name");
+//				LocalDate sd = LocalDate.ofEpochDay(rs.getInt("start_date"));
+//				LocalDate ed = LocalDate.ofEpochDay(rs.getInt("end_date"));
+//				courses.add(new Course(id, name, sd, ed));
+//			}
+//		} catch(SQLException e) {
+//			System.err.println("Error connecting to database:");
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public List<Course> getCourses() {
+		List<Course> courselist = new ArrayList<>();
 		String query = "SELECT * FROM course;";
-		try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+		try(Connection c = DriverManager.getConnection(databaseAddress);
 				Statement st = c.createStatement()) {
 			ResultSet rs = st.executeQuery(query);
 			while(rs.next()) {
@@ -197,25 +214,44 @@ public class StudySystem {
 				String name = rs.getString("name");
 				LocalDate sd = LocalDate.ofEpochDay(rs.getInt("start_date"));
 				LocalDate ed = LocalDate.ofEpochDay(rs.getInt("end_date"));
-				courses.add(new Course(id, name, sd, ed));
+				courselist.add(new Course(id, name, sd, ed));
 			}
 		} catch(SQLException e) {
 			System.err.println("Error connecting to database:");
 			e.printStackTrace();
 		}
+		return courselist;
 	}
 	
+//	private Course getCourseById(int id) {
+//		for(Course course : courses) {
+//			if(course.getId() == id)
+//				return course;
+//		}
+//		return null;
+//	}
+	
 	private Course getCourseById(int id) {
-		for(Course course : courses) {
-			if(course.getId() == id)
-				return course;
+		String query = "SELECT * FROM course WHERE course_id == " + id + ";";
+		try(Connection c = DriverManager.getConnection(databaseAddress);
+				Statement st = c.createStatement()) {
+			ResultSet rs = st.executeQuery(query);
+			rs.next();
+			String name = rs.getString("name");
+			LocalDate sd = LocalDate.ofEpochDay(rs.getInt("start_date"));
+			LocalDate ed = LocalDate.ofEpochDay(rs.getInt("end_date"));
+			return new Course(id, name, sd, ed);
+			
+		} catch(SQLException e) {
+			System.err.println("Error connecting to database:");
+			e.printStackTrace();
 		}
 		return null;
 	}
 	
 	private void loadSessions() {
 		String query = "SELECT * FROM session;";
-		try(Connection c = DriverManager.getConnection("jdbc:sqlite:data/study.db");
+		try(Connection c = DriverManager.getConnection(databaseAddress);
 				Statement st = c.createStatement()) {
 			ResultSet rs = st.executeQuery(query);
 			while(rs.next()) {
