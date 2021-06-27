@@ -10,7 +10,7 @@ public class Course {
 	private LocalDate endDate;
 	
 	private static DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	public static Course NONE = new Course("None", LocalDate.EPOCH, LocalDate.EPOCH);
+	public static Course NONE = new Course("None", LocalDate.MIN, LocalDate.MIN);
 	
 	public Course(String name, LocalDate startDate, LocalDate endDate) {
 		this.name = name;
